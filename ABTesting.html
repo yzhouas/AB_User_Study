@@ -1,0 +1,305 @@
+<!-- saved from url=(0082)http://johanneskopf.de/publications/completion/supplementary/comparison_holes.html -->
+<meta content="text/html; charset=windows-1252" http-equiv="Content-Type" />
+<title></title>
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<style type="text/css">input[type=radio]:checked+label>.correctAnswer {
+      border: 1px solid #090;
+      box-shadow: 0 0 3px 3px #090;
+    }
+</style>
+<style type="text/css">* {
+        margin: 0;
+    }
+    html, body {
+        height: 100%;
+    }
+    
+    body {
+        background-image: url("boundaries/bg.png");
+        overflow: hidden;
+    }
+    
+    .wrapper {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        margin: 0 auto -66px;
+    }
+    
+    .push {
+    }
+    
+    .draggable
+    {
+        position: absolute;
+        z-index: 0;
+    }
+
+    .footer {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        text-align: center;
+        background-color:rgba(255,255,255,0.5);
+        position: relative;
+        height: 40px;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 8px;
+        z-index: 10;
+    }
+    
+    .footer p {
+        font-size: 14px;
+    }
+    
+    .navpanel {
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        background-color:rgba(156,193,244,0);
+        
+        position: relative;
+        top: 0px;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 16px;
+        z-index: 10;
+                border-radius: 10px;
+    }
+    
+    .methodtable td {
+        text-align: center;
+        padding: 5px;
+    }
+
+    .navselected
+    {
+        color: #ff0000;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    
+    .navunselected
+    {
+        color: #000000;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+        var isMouseDown = false;
+        var lastMouseX = 0, lastMouseY = 0;
+        var imgX = 0, imgY = 0;
+        var types = ["A","B"]
+        var dirs = "https://raw.githubusercontent.com/yzhouas/AB_User_Study/main/";
+        var boundaryDir = "crop_mask";
+        var tag = "${image_url}";
+        var type = "A";
+        var lockDrag = false;
+
+        function $(id)
+        {
+            return document.getElementById(id);
+        }
+        
+        function getWidth(id)
+        {
+            var w = parseInt($(id).style.width);
+            return (isNaN(w) ? 0 : w);
+        }
+    
+        function getHeight(id)
+        {
+            var h = parseInt($(id).style.height);
+            return (isNaN(h) ? 0 : h);
+        }
+    
+        function placeImage()
+        {
+            $("image").style.width = "" +"700px";
+            $("image").style.left = ""+((window.innerWidth-$("image").width)/2 + imgX)+"px";
+            $("image").style.top = ""+((window.innerHeight-$("image").height)/2 + imgY)+"px";
+                                       
+            $("boundary").style.width = "" +"700px";
+            $("boundary").style.left = ""+((window.innerWidth-$("boundary").width)/2 + imgX)+"px";
+            $("boundary").style.top = ""+((window.innerHeight-$("boundary").height)/2 + imgY)+"px";
+            
+            $("boundary").style.visibility = ($("boundaryCheck").checked ? "visible" : "hidden");
+        }
+
+        function changeImage()
+        {
+            for (i = 0; i < types.length; i++)
+            {
+                if (types[i] == type)
+                {
+                    $("image").src = dirs + type + '/' + tag;
+                    $("image").onload = placeImage;
+                }
+            }
+        }
+        
+        function changeType(newType)
+        {
+            type = newType;
+                        
+            for (i = 0; i < types.length; i++)
+            {
+                $("typeText_"+types[i]).className = (type == types[i] ? "navselected" : "navunselected");
+            }
+            
+            var fh = 20;
+            
+            if (type == "A"){$("footer").innerHTML = "Sample A";}
+            else if (type == "B"){$("footer").innerHTML = "Sample B";fh = 40;}
+        
+            $("footer").style.height = fh+"px"
+            $("wrapper").style.margin = "0 auto -"+(fh+26)+"px";
+            
+            changeImage();
+        }
+        
+        function changeTag(newTag)
+        {
+            tag = newTag;
+
+            imgX = 0;
+            imgY = 0;
+
+            changeImage();
+        }
+
+        function mouseDown(event)
+        {
+            isMouseDown = true;
+            lastMouseX = event.clientX;
+            lastMouseY = event.clientY;
+            
+            if (event.target == $("image") || event.target == $("boundary"))
+            {
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function mouseUp(event)
+        {
+            isMouseDown = false;
+            lastMouseX = event.clientX;
+            lastMouseY = event.clientY;
+            
+            return false;
+        }
+        
+        function mouseMove(event)
+        {
+            if (isMouseDown && !lockDrag)
+            {
+                imgX += event.clientX-lastMouseX;
+                imgY += event.clientY-lastMouseY;
+                placeImage();
+            }
+            lastMouseX = event.clientX;
+            lastMouseY = event.clientY;
+            
+            return false;
+        }
+        
+        function keyDown(event)
+        {
+            if (event.keyCode == 38)
+            {
+                if ($("imageCombo").selectedIndex > 0)
+                {
+                    $("imageCombo").selectedIndex--;
+                    changeTag($("imageCombo").value);
+                }
+                return false;
+            }
+            else if (event.keyCode == 40)
+            {
+                if ($("imageCombo").selectedIndex < $("imageCombo").options.length-1)
+                {
+                    $("imageCombo").selectedIndex++;
+                    changeTag($("imageCombo").value);
+                }
+                return false;
+            }
+            else if (event.keyCode == 37 || event.keyCode == 39)
+            {
+                for (i = 0; i < types.length; i++)
+                {
+                    if (type == types[i])
+                    {
+                        if (event.keyCode == 37 && i > 0)
+                        {
+                            changeType(types[i-1]);
+                            break;
+                        }
+                        if (event.keyCode == 39 && i < types.length-1)
+                        {
+                            changeType(types[i+1]);
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        
+        function init()
+        {
+            changeImage();
+        }
+        document.onmousedown = mouseDown;
+        document.onmouseup = mouseUp;
+        document.onmousemove = mouseMove;
+        document.onkeydown = keyDown;
+        window.onresize = placeImage;
+    </script>
+<div class="wrapper" id="wrapper">
+<div class="navpanel">
+<center><select id="imageCombo" onchange="changeTag(this.value);" onmouseout="lockDrag=false;" onmouseover="lockDrag=true;" style="width: 200px;" tabindex="-2"><option value="1">Sample</option> </select>&nbsp;&nbsp;&nbsp; <input id="boundaryCheck" onchange="placeImage();" type="checkbox" /> Show Input Boundary
+<table class="methodtable">
+    <tbody>
+        <tr>
+            <td>
+            <div class="navunselected" id="typeText_A" onmousedown="changeType('A');">Sample A</div>
+            </td>
+            <td>
+            <div class="navunselected" id="typeText_B" onmousedown="changeType('B');">Sample B</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<crowd-form> <crowd-radio-group>
+<table class="editorDemoTable" style="vertical-align: top; width: 100%; ">
+    <thead>
+        <tr style="">
+            <td style="width: 30%; text-align: center;">Prefer A</td>
+            <td style="width: 30%; text-align: center;">Equally Good</td>
+            <td style="width: 30%; text-align: center;">Prefer B</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="">
+            <td style="width: 30%; text-align: center;"><input class="input-hidden" id="1" name="Image" required="" type="radio" value="A" /> <label for="1"> </label></td>
+            <td style="width: 30%; text-align: center;"><input class="input-hidden" id="2" name="Image" required="" type="radio" value="equal" /> <label for="2"> </label></td>
+            <td style="width: 30%; text-align: center;"><input class="input-hidden" id="3" name="Image" required="" type="radio" value="B" /> <label for="3"> </label></td>
+        </tr>
+    </tbody>
+</table>
+</crowd-radio-group></crowd-form></center>
+</div>
+
+<div class="push">&nbsp;</div>
+</div>
+
+<div class="footer" id="footer">Sample A</div>
+
+<p><img class="draggable" id="image" src="" style="left: 468px; top: -84px;" tabindex="-4" /> <img class="draggable" id="boundary" src="${image_url}" style="left: 468px; top: -84px; visibility: hidden;" tabindex="-5" /></p>

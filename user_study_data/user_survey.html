@@ -1,0 +1,79 @@
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<style>
+input[type=radio]:checked+label>.correctAnswer {
+  border: 1px solid #090;
+  box-shadow: 0 0 3px 3px #090;
+}
+
+</style>
+
+<crowd-form>
+<crowd-radio-group>
+<p><strong style="color: #000;">[Instructions]</strong>&nbsp;We aim to <span style="color: #ff0000;"><strong>fill in some regions in the image</strong></span>. This region is somewhere inside the red box. We present two different fill results: Image 1 and Image 2. please click on the fill result that you think is more realistic, vivid, and with richer contents.&nbsp;</p>
+<table>
+<tbody>
+<tr style="height: 18px;">
+<td style="height: 18px; text-align: left;"><strong>[Please pay attention to]</strong></td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px;">1. <span style="color: #ff0000;"><strong>Color:</strong> </span>Which one is color-consistent? No boundary is visible.</td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px;">2. <span style="color: #ff0000;"><strong>Alignment:</strong></span> Which one does not have stitching artifacts?</td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px;">3.<span style="color: #ff0000;"><strong> Rich Contents:</strong> </span>Whether the contents is natural, rich, and realistic?&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px;">4. <span style="color: #ff0000;"><strong>Fewer Artifacts:</strong></span> Which one has fewer artifacts?</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>[Note that]</strong></td>
+</tr>
+<tr>
+<td>1. Please check the images carefully. We may not approve the answers <em>with <span style="color: #ff0000;">extremely short working time</span> less than 5s.</em></td>
+</tr>
+<tr>
+<td>2. We have some hidden sanity checking questions. We may not approve the answers from the users <em><span style="color: #ff0000;">who cannot pass the simple checking</span> questions</em>.</td>
+</tr>
+<tr>
+<td>3. We suggest users work on <em>more than <span style="color: #ff0000;">5 HITs</span></em><span style="color: #ff0000;">.</span> Please select the 'auto accept the next HIT' on the top.</td>
+</tr>
+<tr>
+<td>4. It's better to use <span style="color: #ff0000;"><em>laptop</em></span> instead of mobile devices for a better visualization.&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="editorDemoTable" style="vertical-align: top; width: 100%; ">
+<thead>
+<tr style="">
+<td style="width: 50%; text-align: center;">Image 1</td>
+<td style="width: 50%; text-align: center;">Image 2</td>
+</tr>
+</thead>
+<tbody>
+<tr style="">
+<td style="width: 50%; ">
+   
+  <input type="radio" id="1" name="Image" value="img1" class="input-hidden" required>
+  <label for="1">
+  <img class="correctAnswer" src="${image_url1}$" alt="" width="100%"/>
+    </label>
+</td>
+<td style="width: 50%; ">
+   
+  <input type="radio" id="2" name="Image" value="img2" class="input-hidden" required>
+  <label for="2">
+  <img class="correctAnswer" src="${image_url2}$" alt="" width="100%"/>
+  </label>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+</crowd-form>
+</crowd-radio-group>
+
+
+
